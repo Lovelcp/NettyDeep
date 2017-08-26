@@ -1,10 +1,10 @@
 package com.rainbow.study.netty.jdk.bio;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -28,17 +28,21 @@ public class BioEchoServer {
 
         public void run() {
             try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
+                    PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true)) {
                 String data;
                 while ((data = in.readLine()) != null) {
+                    System.out.println("===================");
                     System.out.println("Server receive " + data);
-                    out.write(data + "\n");
+
+                    Thread.sleep(1000); // 1s之后返回
+                    out.println(data);
                     out.flush();
+                    System.out.println("Server echo " + data);
                 }
                 System.out.println("Server close socket");
                 socket.close();
             }
-            catch (IOException e) {
+            catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
