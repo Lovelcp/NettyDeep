@@ -23,11 +23,11 @@ public class BioEchoClient {
         socket.close();
     }
 
-    private static void sendMessage(BufferedReader in, PrintWriter out, String message) throws IOException, InterruptedException {
+    public static void sendMessage(BufferedReader in, PrintWriter out, String message) throws IOException, InterruptedException {
         out.println(message);
         out.flush();
-        System.out.println("Client send " + message);
-        System.out.println("Client receive " + in.readLine());
+        System.out.println("Client send: " + message);
+        System.out.println("Client receive: " + in.readLine());
         System.out.println("===================");
     }
 }

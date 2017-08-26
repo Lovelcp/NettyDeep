@@ -32,12 +32,12 @@ public class BioEchoServer {
                 String data;
                 while ((data = in.readLine()) != null) {
                     System.out.println("===================");
-                    System.out.println("Server receive " + data);
+                    System.out.println("Server receive: " + data);
 
                     Thread.sleep(1000); // 1s之后返回
                     out.println(data);
                     out.flush();
-                    System.out.println("Server echo " + data);
+                    System.out.println("Server echo: " + data);
                 }
                 System.out.println("Server close socket");
                 socket.close();
