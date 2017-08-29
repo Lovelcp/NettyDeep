@@ -6,21 +6,22 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
 public class NioEchoClient {
     public static void main(String[] args) throws IOException {
         new Thread(new EchoClient("127.0.0.1", 8080)).start();
-        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
     }
 
     public static class EchoClient implements Runnable {
@@ -53,8 +54,11 @@ public class NioEchoClient {
             while (!stop) {
                 try {
                     selector.select(1000);
-                    Set<SelectionKey> selectedKeys = selector.selectedKeys();
-                    for (SelectionKey key : selectedKeys) {
+                    Iterator<SelectionKey> itor = selector.selectedKeys()
+                                                          .iterator();
+                    while (itor.hasNext()) {
+                        SelectionKey key = itor.next();
+                        itor.remove();
                         try {
                             handleKey(key);
                         }

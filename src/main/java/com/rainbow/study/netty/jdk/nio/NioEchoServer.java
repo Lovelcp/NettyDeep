@@ -7,7 +7,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.Set;
+import java.util.Iterator;
 
 public class NioEchoServer {
     public static void main(String[] args) throws IOException {
@@ -22,8 +22,11 @@ public class NioEchoServer {
         boolean stop = false;
         while (!stop) {
             selector.select(1000);
-            Set<SelectionKey> selectedKeys = selector.selectedKeys();
-            for (SelectionKey key : selectedKeys) {
+            Iterator<SelectionKey> itor = selector.selectedKeys()
+                                                  .iterator();
+            while (itor.hasNext()) {
+                SelectionKey key = itor.next();
+                itor.remove();
                 try {
                     handleKey(key, selector);
                 }
@@ -55,32 +58,31 @@ public class NioEchoServer {
         if (key.isAcceptable()) {
             // 处理新连接
             ServerSocketChannel serverChannel = (ServerSocketChannel) key.channel();
-            SocketChannel socketChannel = serverChannel.accept(); // 类比BIO的ServerSocket.accept()方法
-//            if (socketChannel != null) {
-                socketChannel.configureBlocking(false);
+            SocketChannel client = serverChannel.accept(); // 类比BIO的ServerSocket.accept()方法
+            System.out.println("Accept connection from " + client);
+            client.configureBlocking(false);
 
-                // 将新连接注册到selector中监听
-                socketChannel.register(selector, SelectionKey.OP_READ);
-//            }
+            // 将新连接注册到selector中监听
+            client.register(selector, SelectionKey.OP_READ);
         }
 
         if (key.isReadable()) {
             // 读取数据
-            SocketChannel socketChannel = (SocketChannel) key.channel();
+            SocketChannel client = (SocketChannel) key.channel();
             ByteBuffer readBuffer = ByteBuffer.allocate(1024);
-            int readBytes = socketChannel.read(readBuffer);
+            int readBytes = client.read(readBuffer);
             if (readBytes > 0) {
                 readBuffer.flip();
                 byte[] bytes = new byte[readBuffer.remaining()];
                 readBuffer.get(bytes);
                 String body = new String(bytes, "UTF-8");
                 System.out.println("Server receive: " + body);
-                echoMessage(socketChannel, body);
+                echoMessage(client, body);
             }
             else if (readBytes < 0) {
                 // 关闭链路
                 key.cancel();
-                socketChannel.close();
+                client.close();
             }
         }
     }
