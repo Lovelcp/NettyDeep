@@ -37,13 +37,13 @@ public class TestEchoServer {
                         SelectionKey clientKey = client.register(selector, SelectionKey.OP_READ);
                         ByteBuffer buffer = ByteBuffer.allocate(100);
                         clientKey.attach(buffer);
+                        key.cancel();
+                        continue;
                     }
                     if (key.isReadable()) {
                         SocketChannel client = (SocketChannel) key.channel();
                         ByteBuffer buffer = (ByteBuffer) key.attachment();
                         client.read(buffer);
-                        key.cancel();
-                        client.close();
                     }
 //                    if (key.isWritable()) {
 //                        // System.out.println("is writable...");

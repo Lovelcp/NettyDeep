@@ -8,20 +8,19 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.Set;
 
 public class NioEchoClient {
     public static void main(String[] args) throws IOException {
         new Thread(new EchoClient("127.0.0.1", 8080)).start();
-//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
-//        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+        //        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+        //        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+        //        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+        //        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+        //        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+        //        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+        //        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+        //        new Thread(new EchoClient("127.0.0.1", 8080)).start();
+        //        new Thread(new EchoClient("127.0.0.1", 8080)).start();
     }
 
     public static class EchoClient implements Runnable {
