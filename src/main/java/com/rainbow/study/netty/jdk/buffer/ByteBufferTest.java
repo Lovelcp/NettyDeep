@@ -23,8 +23,14 @@ public class ByteBufferTest {
         System.out.println(charBuffer.get());
         printBufferInfo(charBuffer);
 
-        charBuffer.compact();
+        charBuffer.rewind(); // reread data
+        System.out.println(charBuffer.get());
         printBufferInfo(charBuffer);
+
+        charBuffer.compact(); // make buffer ready for following write operation
+        charBuffer.put("!!!");
+        printBufferInfo(charBuffer);
+        System.out.println(new String(charBuffer.array()));
 
         // wrap初始化buffer之后，position位置为0，无需调用flip即可开始读取
         ByteBuffer wrapBuffer = ByteBuffer.wrap("How are you".getBytes());
