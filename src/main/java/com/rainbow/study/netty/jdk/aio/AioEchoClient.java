@@ -10,11 +10,12 @@ import java.nio.channels.CompletionHandler;
 public class AioEchoClient {
     public static void main(String[] args) throws IOException {
         AsynchronousSocketChannel client = AsynchronousSocketChannel.open();
-        
+
         client.connect(new InetSocketAddress("127.0.0.1", 8080), null, new CompletionHandler<Void, Object>() {
             @Override
             public void completed(Void result, Object attachment) {
-                byte[] data = String.valueOf(System.currentTimeMillis()).getBytes();
+                byte[] data = String.valueOf(System.currentTimeMillis())
+                                    .getBytes();
                 ByteBuffer writeBuffer = ByteBuffer.allocate(data.length);
                 writeBuffer.put(data);
                 writeBuffer.flip();

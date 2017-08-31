@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
+import java.util.concurrent.Executors;
 
 public class AioEchoServer {
     public static void main(String[] args) throws IOException {
         int port = 8080;
-        AsynchronousServerSocketChannel serverSocketChannel = AsynchronousServerSocketChannel.open();
+        AsynchronousChannelGroup group = AsynchronousChannelGroup.withThreadPool(Executors.newFixedThreadPool(4));
+        AsynchronousServerSocketChannel serverSocketChannel = AsynchronousServerSocketChannel.open(group);
         serverSocketChannel.bind(new InetSocketAddress(port));
         System.out.println("Server start!");
 
