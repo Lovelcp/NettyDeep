@@ -25,6 +25,13 @@ public class AioEchoServer {
                 client.read(buffer, buffer, new CompletionHandler<Integer, ByteBuffer>() {
                     @Override
                     public void completed(Integer result, ByteBuffer attachment) {
+                        if (result <= 0) {
+                            // 如果没有数据，则什么都不做，继续保持读取状态
+                            ByteBuffer newBuffer = ByteBuffer.allocate(1024);
+                            client.read(newBuffer, newBuffer, this);
+                            return;
+                        }
+
                         attachment.flip();
                         byte[] body = new byte[attachment.remaining()];
                         attachment.get(body);

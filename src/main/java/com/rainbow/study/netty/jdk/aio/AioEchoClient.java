@@ -79,5 +79,8 @@ public class AioEchoClient {
                 }
             }
         });
+
+        // 阻塞main线程，防止server退出
+        System.in.read();
     }
 }
